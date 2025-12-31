@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Éclat Studio - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2rem;
+            color: #333;
+        }
+
+        /* LOGIN */
+        .admin-login {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .admin-login h2 {
+            color: #ff6f61;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .admin-login__input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .admin-login__input:focus {
+            border-color: #ff6f61;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 111, 97, 0.4);
+        }
+
+        .admin-login__btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ff6f61, #ff8a65);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.3);
+        }
+
+        .admin-login__btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff4d4d, #ff7e67);
+        }
+
+        /* NAVIGATION */
+        .admin-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-nav button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            color: #ff6f61;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-nav button.active,
+        .admin-nav button:hover {
+            background: #ff6f61;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.3);
+        }
+
+        /* PANEL */
+        #admin-panel {
+            width: 100%;
+            max-width: 1100px;
+            display: none;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        /* FILTRES */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters input,
+        .filters select,
+        .filters button {
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .filters input:focus,
+        .filters select:focus {
+            border-color: #ff6f61;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 111, 97, 0.4);
+        }
+
+        .filters button {
+            background: #ff6f61;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filters button:hover {
+            background: #ff3d3d;
+            transform: scale(1.05);
+        }
+
+        /* TABLE */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .admin-table th {
+            background: #ff6f61;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .admin-table tr:nth-child(even) {
+            background: rgba(255, 240, 235, 0.8);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(255, 111, 97, 0.1);
+            transition: 0.2s;
+        }
+
+        .status-pending {
+            color: #ff6f61;
+            font-weight: 700;
+        }
+
+        .status-confirmed {
+            color: #28a745;
+            font-weight: 700;
+        }
+
+        select.status-select {
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        /* DELETE BUTTON */
+        .delete-btn {
+            background: #ff3d3d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #c90000;
+            transform: scale(1.1);
+        }
+
+        /* STATS */
+        .stats-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 111, 97, 0.2);
+        }
+
+        /* TOAST */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ff6f61;
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            opacity: 0;
+            transition: all 0.5s;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(-10px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            .admin-login {
+                padding: 2rem 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .admin-table {
+                font-size: 0.85rem;
+            }
+
+            .stats-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- LOGIN -->
+    <section class="admin-login" id="admin-login">
+        <h2>Connexion Admin</h2>
+        <input type="email" placeholder="Email" class="admin-login__input" id="admin-email">
+        <input type="password" placeholder="Mot de passe" class="admin-login__input" id="admin-password">
+        <button class="admin-login__btn" id="login-btn">Se connecter</button>
+    </section>
+
+    <!-- PANEL -->
+    <section id="admin-panel">
+        <nav class="admin-nav">
+            <button class="active" data-section="appointments">📅 Rendez-vous</button>
+            <button data-section="stats">📊 Statistiques</button>
+        </nav>
+
+        <div class="filters">
+            <input type="text" id="search-input" placeholder="Rechercher...">
+            <select id="status-filter">
+                <option value="">Tous</option>
+                <option value="pending">En attente</option>
+                <option value="confirmed">Confirmé</option>
+            </select>
+            <button id="export-btn">📤 Export CSV</button>
+        </div>
+
+        <section id="appointments-section">
+            <h2>Liste des Rendez-vous</h2>
+            <table class="admin-table" id="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section id="stats-section" style="display:none;">
+            <h2>Statistiques</h2>
+            <div class="stats-cards">
+                <div class="card">Total : <span id="total-rdv">0</span></div>
+                <div class="card">Confirmés : <span id="confirmed-count">0</span></div>
+                <div class="card">En attente : <span id="pending-count">0</span></div>
+            </div>
+        </section>
+    </section>
+
+    <div id="toast"></div>
+    <script>
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js";
+        script.onload = () => {
+            const SUPABASE_URL = 'https://yhyaiictakvejlfptvbh.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeWFpaWN0YWt2ZWpsZnB0dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4MDc0MzMsImV4cCI6MjA3ODM4MzQzM30.UzQbPSOkIuwyVgeAm31ZS9dCYeVgYRvWaIBHs_dwO2I';
+            const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            const loginBtn = document.getElementById('login-btn');
+            const adminLoginSection = document.getElementById('admin-login');
+            const adminPanel = document.getElementById('admin-panel');
+            const tableBody = document.querySelector('#appointments-table tbody');
+
+            let appointments = [];
+
+            loginBtn.addEventListener('click', async () => {
+                const email = document.getElementById('admin-email').value;
+                const password = document.getElementById('admin-password').value;
+                const { data, error } = await client.auth.signInWithPassword({ email, password });
+                if (error) return alert("Erreur de connexion !");
+                adminLoginSection.style.display = 'none';
+                adminPanel.style.display = 'block';
+                loadAppointments();
+                subscribeNewAppointments();
+            });
+
+            async function loadAppointments() {
+                const { data, error } = await client
+                    .from('appointments')
+                    .select('*')
+                    .order('date', { ascending: true })
+                    .order('time', { ascending: true });
+                if (error) return alert("Erreur chargement RDV !");
+                appointments = data;
+                renderAppointments(appointments);
+                updateStats(appointments);
+            }
+
+            function renderAppointments(appointments) {
+                tableBody.innerHTML = '';
+                appointments.forEach(rdv => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+      <td>${rdv.name}</td>
+      <td>${rdv.email}</td>
+      <td>${rdv.phone || '-'}</td>
+      <td>${rdv.service}</td>
+      <td>${rdv.date}</td>
+      <td>${rdv.time}</td>
+      <td>
+        <select class="status-select" data-id="${rdv.id}">
+          <option value="pending" ${rdv.status === 'pending' ? 'selected' : ''}>En attente</option>
+          <option value="confirmed" ${rdv.status === 'confirmed' ? 'selected' : ''}>Confirmé</option>
+          <option value="done" ${rdv.status === 'done' ? 'selected' : ''}>Terminé</option>
+        </select>
+      </td>
+      <td>
+        <button class="delete-btn" data-id="${rdv.id}">🗑</button>
+      </td>
+    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // 🔄 Gestion du changement de statut
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', async e => {
+                        const id = e.target.dataset.id;
+                        const newStatus = e.target.value;
+                        try {
+                            const { error } = await client
+                                .from('appointments')
+                                .update({ status: newStatus })
+                                .eq('id', id);
+
+                            if (error) throw error;
+                            alert(`✅ Statut du RDV #${id} mis à jour : ${newStatus}`);
+                        } catch (err) {
+                            console.error(err);
+                            alert('❌ Erreur lors de la mise à jour du statut');
+                        }
+                    });
+                });
+
+                // 🗑 Gestion de la suppression
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async e => {
+                        const id = e.target.dataset.id;
+                        if (confirm(`⚠️ Supprimer le rendez-vous #${id} ?`)) {
+                            try {
+                                const { error } = await client
+                                    .from('appointments')
+                                    .delete()
+                                    .eq('id', id);
+
+                                if (error) throw error;
+                                alert(`🗑 RDV #${id} supprimé avec succès`);
+                                loadAppointments(); // recharger la table
+                            } catch (err) {
+                                console.error(err);
+                                alert('❌ Erreur lors de la suppression du rendez-vous');
+                            }
+                        }
+                    });
+                });
+            }
+
+            window.updateStatus = async (id, newStatus) => {
+                await client.from('appointments').update({ status: newStatus }).eq('id', id);
+                loadAppointments();
+                showToast('Statut mis à jour ✅');
+            };
+
+            function updateStats(data) {
+                const total = data.length;
+                const confirmed = data.filter(x => x.status === 'confirmed').length;
+                const pending = data.filter(x => x.status === 'pending').length;
+                document.getElementById('total-rdv').textContent = total;
+                document.getElementById('confirmed-count').textContent = confirmed;
+                document.getElementById('pending-count').textContent = pending;
+            }
+
+            document.getElementById('search-input').addEventListener('input', () => renderAppointments(appointments));
+            document.getElementById('status-filter').addEventListener('change', () => renderAppointments(appointments));
+
+            function subscribeNewAppointments() {
+                let lastCount = 0;
+                setInterval(async () => {
+                    const { data, error } = await client.from('appointments').select('id');
+                    if (!error && data.length > lastCount) {
+                        const newCount = data.length - lastCount;
+                        if (newCount > 0) showToast(`⚡ ${newCount} nouveau(x) rendez-vous !`);
+                        lastCount = data.length;
+                        loadAppointments();
+                    }
+                }, 10000);
+            }
+
+            document.getElementById('export-btn').addEventListener('click', () => {
+                const rows = [['Nom', 'Email', 'Téléphone', 'Service', 'Date', 'Heure', 'Statut']];
+                appointments.forEach(r => rows.push([r.name, r.email, r.phone, r.service, r.date, r.time, r.status]));
+                const csv = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+                const link = document.createElement('a');
+                link.href = encodeURI(csv);
+                link.download = "rendezvous.csv";
+                link.click();
+            });
+
+            function showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+
+            document.querySelectorAll('.admin-nav button').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.getElementById('appointments-section').style.display = btn.dataset.section === 'appointments' ? 'block' : 'none';
+                    document.getElementById('stats-section').style.display = btn.dataset.section === 'stats' ? 'block' : 'none';
+                });
+            });
+        };
+        document.head.appendChild(script);
+    </script>
+</body>
+
+</html>

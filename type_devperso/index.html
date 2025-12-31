@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoachPerso+ — Transformez votre vie</title>
+
+  <style>
+    /* RESET */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #ff8a00;
+      --accent: #ffb347;
+      --bg: #f2f3f7;
+      --text-dark: #1c1c1c;
+      --text-light: #fff;
+      --glass: rgba(255, 255, 255, 0.15);
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      --transition: 0.3s ease;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--text-dark);
+      background: var(--bg);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* HEADER */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: var(--glass);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 1000;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    .header--scrolled {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    }
+
+    .header__container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 90%;
+      margin: auto;
+      height: 70px;
+      transition: height var(--transition);
+    }
+
+    .header--scrolled .header__container {
+      height: 60px;
+    }
+
+    .header__logo {
+      width:190px;
+      height:auto;
+    }
+
+    .header--scrolled .header__logo {
+      transform: scale(0.9);
+    }
+
+    .header__nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    .header__nav a {
+      font-weight: 500;
+      position: relative;
+    }
+
+    .header__nav a::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background: var(--primary);
+      transition: width var(--transition);
+    }
+
+    .header__nav a:hover::after {
+      width: 100%;
+    }
+
+    .header__toggle {
+      display: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .header__nav {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px;
+        border-radius: 20px 0 0 20px;
+        box-shadow: var(--shadow);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      .header__nav--active {
+        transform: translateX(0);
+      }
+      .header__toggle {
+        display: block;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      animation: fade-up 1s ease;
+    }
+
+    .hero__content h1 {
+      font-size: 2.8rem;
+      line-height: 1.3;
+    }
+
+    .hero__content p {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 35px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 138, 0, 0.3);
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 138, 0, 0.4);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 100px 0;
+      width: 90%;
+      margin: auto;
+      max-width: 1200px;
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      display: block;
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ABOUT */
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about__img {
+      flex: 1 1 400px;
+    }
+
+    .about__img img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .about__text {
+      flex: 1 1 400px;
+    }
+
+    .about__text p {
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    /* SERVICES */
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .service-card span {
+      display: inline-block;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    /* METHOD */
+    .method {
+      background: rgba(255,255,255,0.5);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      padding: 60px 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .method__steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .method__step {
+      flex: 1 1 250px;
+      text-align: center;
+    }
+
+    .method__step h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: linear-gradient(to right, #fff3e0, #ffe0b2);
+      border-radius: 20px;
+      padding: 60px 30px;
+    }
+
+    .testimonial {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin: 20px auto;
+      max-width: 600px;
+      font-style: italic;
+    }
+
+    /* FAQ */
+    .faq {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq__item {
+      background: rgba(255,255,255,0.6);
+      margin-bottom: 15px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .faq__item:hover {
+      background: rgba(255,255,255,0.8);
+    }
+
+    .faq__question {
+      font-weight: 600;
+      position: relative;
+    }
+
+    .faq__answer {
+      display: none;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .faq__item.active .faq__answer {
+      display: block;
+    }
+
+    /* CONTACT */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .form input, .form textarea {
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .form input:focus, .form textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(255,138,0,0.2);
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 60px 20px;
+      background: #1c1c1c;
+      color: #fff;
+    }
+
+    .footer__social {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .footer__social a {
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .footer__social a:hover {
+      color: var(--primary);
+    }
+
+    /* SCROLL UP BUTTON */
+    .scroll-up {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary);
+      color: #fff;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .scroll-up.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* FADE-UP ANIMATION */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    [data-animate].active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__container">
+      <img src="Logos.png" class="header__logo">
+      <nav class="header__nav" id="navMenu">
+        <a href="#about">À propos</a>
+        <a href="#services">Services</a>
+        <a href="#method">Méthode</a>
+        <a href="#testimonials">Avis</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header__toggle" id="navToggle">☰</div>
+    </>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__content">
+      <h1>Transformez votre vie, un pas à la fois</h1>
+      <p>Coaching personnalisé et accompagnement complet pour devenir la version la plus alignée de vous-même.</p>
+      <a href="#contact" class="btn">Commencer maintenant</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about" data-animate>
+    <div class="about__img">
+      <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=800&q=80" alt="Coach">
+    </div>
+    <div class="about__text">
+      <h2>À propos</h2>
+      <p>Coach certifié depuis plus de 10 ans, j’accompagne celles et ceux qui souhaitent s’épanouir pleinement dans leur vie personnelle et professionnelle.</p>
+      <p>Mon approche repose sur la clarté, l’action et l’équilibre émotionnel. Ensemble, nous travaillons à bâtir des fondations solides pour un changement durable.</p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" data-animate>
+    <h2>Mes Services</h2>
+    <div class="services__grid">
+      <div class="service-card"><span>💼</span><h3>Coaching Individuel</h3><p>Des sessions personnalisées pour clarifier vos objectifs et passer à l’action.</p></div>
+      <div class="service-card"><span>🧘</span><h3>Gestion du stress</h3><p>Apprenez à canaliser vos émotions et retrouver la sérénité au quotidien.</p></div>
+      <div class="service-card"><span>🔥</span><h3>Confiance & affirmation</h3><p>Développez votre assurance et affirmez vos décisions sans peur.</p></div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section id="method" data-animate>
+    <h2>Ma Méthode</h2>
+    <div class="method">
+      <div class="method__steps">
+        <div class="method__step"><h3>1. Clarté</h3><p>Identifier vos blocages, vos valeurs et vos véritables besoins.</p></div>
+        <div class="method__step"><h3>2. Action</h3><p>Mettre en place un plan concret adapté à votre rythme et vos priorités.</p></div>
+        <div class="method__step"><h3>3. Équilibre</h3><p>Créer une harmonie durable entre ambitions, émotions et bien-être.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" data-animate>
+    <h2>Témoignages</h2>
+    <div class="testimonial">“Une expérience incroyable. J’ai appris à mieux me comprendre et à agir sans peur.”<strong>— Léa</strong></div>
+    <div class="testimonial">“Un accompagnement profondément humain et transformateur.”<strong>— Julien</strong></div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" data-animate>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <div class="faq__item">
+        <div class="faq__question">Combien de temps dure un accompagnement ?</div>
+        <div class="faq__answer">Chaque parcours est personnalisé, mais en général un suivi s’étend sur 8 à 12 semaines pour des résultats solides.</div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__question">Les séances sont-elles à distance ?</div>
+        <div class="faq__answer">Oui, les sessions peuvent se faire en visioconférence ou en présentiel selon vos préférences.</div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__question">Est-ce que le premier appel est gratuit ?</div>
+        <div class="faq__answer">Absolument, un premier appel découverte est offert pour évaluer vos besoins et voir si le courant passe.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-animate>
+    <h2>Contact</h2>
+    <form class="form">
+      <input type="text" placeholder="Nom" required>
+      <input type="email" placeholder="Email" required>
+      <textarea rows="5" placeholder="Votre message..." required></textarea>
+      <button class="btn" type="submit">Envoyer</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; 2025 CoachPerso+. Tous droits réservés.</p>
+    <div class="footer__social">
+      <a href="#">FB</a><a href="#">IG</a><a href="#">TW</a>
+    </div>
+  </footer>
+
+  <!-- SCROLL UP -->
+  <div class="scroll-up" id="scrollUp">↑</div>
+
+  <script>
+    const header = document.getElementById('header');
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const scrollUp = document.getElementById('scrollUp');
+
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('header__nav--active'));
+
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('header--scrolled', window.scrollY > 60);
+      scrollUp.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    scrollUp.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+    document.querySelectorAll('.faq__item').forEach(item => {
+      item.addEventListener('click', () => item.classList.toggle('active'));
+    });
+
+    const elements = document.querySelectorAll('[data-animate]');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, {threshold: 0.2});
+    elements.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

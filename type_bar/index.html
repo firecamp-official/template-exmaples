@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roast & Chill - Café Authentique</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #f6f1eb;
+            --color-primary: #7a4a23;
+            --color-secondary: #c89666;
+            --color-text: #2b1d14;
+            --font-title: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+            --radius: 12px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.8rem 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar__logo {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            letter-spacing: 1px;
+        }
+
+        .navbar__list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .navbar__link {
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar__link:hover {
+            color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .navbar__toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .navbar__toggle span {
+            width: 26px;
+            height: 3px;
+            background: var(--color-text);
+            transition: all 0.3s ease;
+        }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+        }
+
+        .hero__content {
+            z-index: 2;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero__title {
+            font-family: var(--font-title);
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero__subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero__btn {
+            background: var(--color-secondary);
+            color: #fff;
+            padding: 0.9rem 2rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .hero__btn:hover {
+            background: var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SECTIONS */
+        .section {
+            padding: 7rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section__title {
+            font-family: var(--font-title);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            position: relative;
+        }
+
+        .section__title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--color-secondary);
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* ABOUT */
+        .about__container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about__img {
+            width: 400px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            object-fit: cover;
+        }
+
+        .about__text {
+            max-width: 500px;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* MENU CAROUSEL */
+        .menu__carousel {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu__track {
+            display: flex;
+            gap: 2rem;
+            transition: transform 0.5s ease;
+        }
+
+        .menu__item {
+            min-width: 260px;
+            background: #fff;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu__item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu__item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu__content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .menu__title {
+            font-family: var(--font-title);
+            margin-bottom: 0.5rem;
+        }
+
+        .menu__desc {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .menu__price {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .menu__nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .menu__btn {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1rem;
+            margin:20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: background 0.3s;
+        }
+
+        .menu__btn:hover {
+            background: var(--color-secondary);
+        }
+
+        /* GALLERY */
+        .gallery__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery__img {
+            width: 100%;
+            border-radius: var(--radius);
+            transition: transform 0.3s, filter 0.3s;
+            box-shadow: var(--shadow);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery__img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+
+        .gallery__overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: var(--radius);
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery__item {
+            position: relative;
+        }
+
+        .gallery__item:hover .gallery__overlay {
+            opacity: 1;
+        }
+
+        /* CONTACT */
+        .contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .contact__input,
+        .contact__textarea {
+            padding: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+
+        .contact__btn {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.9rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact__btn:hover {
+            background: var(--color-secondary);
+            transform: scale(1.03);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px) {
+            .navbar__list {
+                display: none;
+                flex-direction: column;
+                background: #fff;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                padding: 1rem 2rem;
+            }
+
+            .navbar__list.active {
+                display: flex;
+            }
+
+            .navbar__toggle {
+                display: flex;
+            }
+
+            .about__container {
+                flex-direction: column;
+            }
+
+            .hero__title {
+                font-size: 2.6rem;
+            }
+
+            .menu__carousel {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .menu__track {
+                flex-wrap: nowrap;
+            }
+
+            .menu__item {
+                scroll-snap-align: center;
+            }
+
+            .menu__nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="navbar__logo">Roast & Chill</div>
+        <nav class="navbar__menu">
+            <ul class="navbar__list">
+                <li><a href="#about" class="navbar__link">À propos</a></li>
+                <li><a href="#menu" class="navbar__link">Menu</a></li>
+                <li><a href="#gallery" class="navbar__link">Galerie</a></li>
+                <li><a href="#contact" class="navbar__link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="navbar__toggle" id="navbarToggle"><span></span><span></span><span></span></div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <h1 class="hero__title">Roast & Chill</h1>
+            <p class="hero__subtitle">Le goût du café, l’art du moment.</p>
+            <a href="#menu" class="hero__btn">Découvrir le menu</a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about section" id="about">
+        <div class="about__container">
+            <img src="https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=800&q=80"
+                alt="Intérieur du café" class="about__img" />
+            <div class="about__text">
+                <h2 class="section__title">Notre histoire</h2>
+                <p>Chez Roast & Chill, le café est un rituel — un instant suspendu où chaque arôme raconte une histoire.
+                    Nos baristas torréfient avec soin pour révéler toute la richesse des grains.</p>
+                <p>L’ambiance ? Un refuge chaleureux, texturé, où le bois, le cuir et la lumière dorée s’entremêlent
+                    pour créer un cocon parfait pour se détendre.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu section" id="menu">
+        <h2 class="section__title">Notre Menu</h2>
+        <div class="menu__carousel">
+            <div class="menu__track">
+                <div class="menu__item">
+                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80"
+                        alt="Latte Vanille">
+                    <div class="menu__content">
+                        <h3 class="menu__title">Latte Vanille</h3>
+                        <p class="menu__desc">Onctueux et parfumé à la vanille.</p><span
+                            class="menu__price">4,50€</span>
+                    </div>
+                </div>
+                <div class="menu__item">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80"
+                        alt="Espresso Intense">
+                    <div class="menu__content">
+                        <h3 class="menu__title">Espresso Intense</h3>
+                        <p class="menu__desc">Corsé et puissant, torréfié maison.</p><span
+                            class="menu__price">2,80€</span>
+                    </div>
+                </div>
+                <div class="menu__item">
+                    <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800&q=80"
+                        alt="Café Glacé">
+                    <div class="menu__content">
+                        <h3 class="menu__title">Café Glacé</h3>
+                        <p class="menu__desc">Rafraîchissant et doux, parfait pour l’été.</p><span
+                            class="menu__price">4,00€</span>
+                    </div>
+                </div>
+                <div class="menu__item">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80"
+                        alt="Cappuccino">
+                    <div class="menu__content">
+                        <h3 class="menu__title">Cappuccino</h3>
+                        <p class="menu__desc">Crémeux et onctueux avec une mousse légère.</p><span
+                            class="menu__price">4,20€</span>
+                    </div>
+                </div>
+                <div class="menu__item">
+                    <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800&q=80"
+                        alt="Mocha">
+                    <div class="menu__content">
+                        <h3 class="menu__title">Mocha</h3>
+                        <p class="menu__desc">Mélange chocolat et espresso gourmand.</p><span
+                            class="menu__price">4,70€</span>
+                    </div>
+                </div>
+            </div>
+            <div class="menu__nav">
+                <button class="menu__btn" id="prevBtn">&#10094;</button>
+                <button class="menu__btn" id="nextBtn">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery section" id="gallery">
+        <h2 class="section__title">Ambiance & Moments</h2>
+        <div class="gallery__grid">
+            <div class="gallery__item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    class="gallery__img">
+                <div class="gallery__overlay">Coin lecture cosy avec fauteuils en cuir et lumière douce.</div>
+            </div>
+            <div class="gallery__item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    class="gallery__img">
+                <div class="gallery__overlay">Barista en action préparant des espresso parfaits.</div>
+            </div>
+            <div class="gallery__item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    class="gallery__img">
+                <div class="gallery__overlay">Tasse de latte art servie avec passion.</div>
+            </div>
+            <div class="gallery__item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    class="gallery__img">
+                <div class="gallery__overlay">Ambiance lumineuse et chaleureuse du café en soirée.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact section" id="contact">
+        <h2 class="section__title">Réserver ou nous écrire</h2>
+        <form class="contact__form">
+            <input type="text" placeholder="Votre nom" required class="contact__input" />
+            <input type="email" placeholder="Votre email" required class="contact__input" />
+            <textarea placeholder="Votre message" required class="contact__textarea"></textarea>
+            <button type="submit" class="contact__btn">Envoyer</button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Roast & Chill — Torréfié avec ❤️ à Tours.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        const navbar = document.querySelector(".navbar");
+        window.addEventListener("scroll", () => { navbar.classList.toggle("scrolled", window.scrollY > 50); });
+
+        // Burger toggle
+        const navbarToggle = document.getElementById("navbarToggle");
+        const navList = document.querySelector(".navbar__list");
+        navbarToggle.addEventListener("click", () => { navList.classList.toggle("active"); });
+
+        // Fade-in sections
+        const sections = document.querySelectorAll(".section");
+        const reveal = () => { const trigger = window.innerHeight * 0.85; sections.forEach(s => { const top = s.getBoundingClientRect().top; if (top < trigger) s.classList.add("visible"); }); };
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+
+        const track = document.querySelector(".menu__track");
+        const prev = document.getElementById("prevBtn");
+        const next = document.getElementById("nextBtn");
+
+        let position = 0;
+        const itemWidth = document.querySelector(".menu__item").offsetWidth + 20; // 32 = gap
+
+        // largeur maximale du track visible
+        const maxScroll = track.scrollWidth - track.parentElement.offsetWidth;
+
+        prev.addEventListener("click", () => {
+            position -= itemWidth;
+            if (position < 0) position = 0; // on ne dépasse pas le début
+            track.style.transform = `translateX(-${position}px)`;
+        });
+
+        next.addEventListener("click", () => {
+            position += itemWidth;
+            if (position > maxScroll) position = maxScroll; // on ne dépasse pas la fin
+            track.style.transform = `translateX(-${position}px)`;
+        });
+
+        // GALLERY LIGHTBOX
+        const galleryItems = document.querySelectorAll(".gallery__img");
+        galleryItems.forEach(img => {
+            img.addEventListener("click", () => {
+                const overlay = document.createElement("div");
+                overlay.style.position = "fixed";
+                overlay.style.inset = "0";
+                overlay.style.background = "rgba(0,0,0,0.85)";
+                overlay.style.display = "flex";
+                overlay.style.alignItems = "center";
+                overlay.style.justifyContent = "center";
+                overlay.style.zIndex = "9999";
+                overlay.style.cursor = "zoom-out";
+                const bigImg = document.createElement("img");
+                bigImg.src = img.src;
+                bigImg.style.maxWidth = "90%";
+                bigImg.style.maxHeight = "90%";
+                bigImg.style.borderRadius = "12px";
+                overlay.appendChild(bigImg);
+                document.body.appendChild(overlay);
+                overlay.addEventListener("click", () => { document.body.removeChild(overlay); });
+            });
+        });
+    </script>
+</body>
+
+</html>
